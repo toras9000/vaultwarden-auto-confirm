@@ -1,0 +1,44 @@
+﻿{
+  "Operation":
+  {
+    "StartupWaitSeconds": 60,
+    "IntervalMinutes": 60
+  },
+  "Vaultwarden":
+  {
+    "Server":
+    {
+      "Url": ""
+    },
+    "Organization":
+    {
+      "OrgId": "organization-id"
+    },
+    "ConfirmUser":
+    {
+      "Mail": "owner-user@mail",
+      "MasterPassword": "owner-master-pass"
+    },
+    "Permissions":
+    {
+      "Enabled": true,
+      "Role": "User",
+      "Collections":
+      [
+        {
+          "ID": "collection-id",
+          "Privilege": "Show"
+        },
+        {
+          "Name": "collection-name",
+          "Privilege": "Edit"
+        }
+      ]
+    },
+    "Client":
+    {
+      "DeviceName": "vaultwarden-auto-confirm",
+      "DeviceIdentifier": "vaultwarden-auto-confirm"
+    }
+  }
+}
