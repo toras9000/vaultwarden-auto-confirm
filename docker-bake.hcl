@@ -1,6 +1,6 @@
 
 variable "IMAGE_TAG" {
-  default = "latest"
+  default = "0.1.0"
 }
 
 target "default" {

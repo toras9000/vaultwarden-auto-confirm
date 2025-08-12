@@ -8,6 +8,11 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <Authors>toras9000</Authors>
+    <Version>0.1.0</Version>
+  </PropertyGroup>
+
   <ItemGroup>
     <Folder Include="Data\" />
   </ItemGroup>
