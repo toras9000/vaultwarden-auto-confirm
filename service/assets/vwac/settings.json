@@ -8,7 +8,7 @@
       "Url": "http://vaultwarden-container:80"
     },
     "Organization": {
-      "OrgId": "69a82372-5982-447f-987a-801f43280e66"
+      "OrgId": "96521245-bfdd-438a-99b7-4c6512594fda"
     },
     "ConfirmUser": {
       "Mail": "tester@myserver.home",
@@ -19,12 +19,16 @@
       "Role": "User",
       "Collections": [
         {
-          "Name": "Collec1",
+          "ID": "d98bc05e-6b6b-4022-9c39-b579789cbd79",
           "Privilege": "Show"
         },
         {
-          "Name": "Collec2",
+          "Name": "Collec1",
           "Privilege": "Edit"
+        },
+        {
+          "ID": "3e01ef1e-d32e-46e8-a9f8-8eda451e1fc5",
+          "Privilege": "Manage"
         }
       ]
     },

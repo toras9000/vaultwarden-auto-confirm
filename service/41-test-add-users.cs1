@@ -1,0 +1,52 @@
+#!/usr/bin/env -S dotnet run --file
+#:package VwConnector@1.34.3-rev.2
+#:package Lestaly.General@0.114.0
+#:package Kokuban@0.2.0
+#:package RefFile@0.2.0
+#:property PublishAot=false
+using Kokuban;
+using Lestaly;
+using VwConnector;
+using VwConnector.Agent;
+[assembly: RefFile(".settings.cs1")]
+
+return await Paved.ProceedAsync(noPause: args.RoughContains("--no-pause"), async () =>
+{
+    using var signal = new SignalCancellationPeriod();
+
+    var vwSettings = new Settings();
+    var orgName = vwSettings.Setup.TestOrg.Name;
+    var user = new UserContext(vwSettings.Setup.TestUser.Mail, vwSettings.Setup.TestUser.Password);
+    var agent = await VaultwardenAgent.CreateAsync(vwSettings.Service.Url, user, signal.Token);
+    var org = agent.Profile.organizations.FirstOrDefault(o => o.name == orgName) ?? throw new Exception("Org not found");
+
+    Console.WriteLine("Register test user");
+    while (true)
+    {
+        Console.Write(">");
+        var input = Console.ReadLine()?.Trim();
+        if (input == null) break;
+        if (input.IsWhite()) continue;
+
+        try
+        {
+            var name = input.Trim() == "*" ? $"user-{DateTime.Now.Ticks:X16}" : input;
+            var mail = $"{name}@myserver.home";
+            var pass = $"{name}-pass";
+            Console.WriteLine("Register");
+            Console.WriteLine($"  Mail: {mail}");
+            Console.WriteLine($"  Pass: {pass}");
+            await agent.Connector.Account.RegisterUserNoSmtpAsync(new(mail, pass), signal.Token);
+            Console.WriteLine(Chalk.Green["  .. Completed"]);
+
+            Console.WriteLine($"Invite to {org.name}");
+            var inviteArgs = new InviteOrgMemberArgs(VwConnector.InviteMembershipType.User, emails: [mail], groups: []);
+            await agent.Connector.Organization.InviteUserAsync(agent.Token, org.id, inviteArgs, signal.Token);
+            Console.WriteLine(Chalk.Green["  .. Completed"]);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(Chalk.Red[$"Error: {ex.Message}"]);
+        }
+    }
+});

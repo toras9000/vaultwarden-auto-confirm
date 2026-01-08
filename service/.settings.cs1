@@ -1,0 +1,39 @@
+#!/usr/bin/env -S dotnet run --file
+
+public record SettingsService(Uri Url);
+public record SettingsSetup(SettingsSetupAdmin Admin, SettingsSetupUser TestUser, SettingsSetupOrg TestOrg);
+public record SettingsSetupAdmin(string Password);
+public record SettingsSetupUser(string Mail, string Password);
+public record SettingsSetupOrg(string Name, string[] Collections);
+
+public class Settings
+{
+    // Vaultwarden service
+    public SettingsService Service { get; } = new
+    (
+        // Vaultwarden URL
+        Url: new Uri("http://localhost:8240")
+    );
+
+    public SettingsSetup Setup { get; } = new
+    (
+        Admin: new
+        (
+            Password: "admin-pass"
+        ),
+        TestUser: new
+        (
+            Mail: "tester@myserver.home",
+            Password: "tester-password"
+        ),
+        TestOrg: new
+        (
+            Name: "TestOrg",
+            Collections: new[]
+            {
+                "Collec1",
+                "Collec2",
+            }
+        )
+    );
+}
